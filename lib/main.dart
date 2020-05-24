@@ -4,7 +4,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:time_ago_provider/time_ago_provider.dart';
-
 import 'model/Post.dart';
 
 void main() => runApp(MyApp());
@@ -62,19 +61,21 @@ class _MyHomePageState extends State<MyHomePage> {
     postRef.once().then((DataSnapshot snap) {
       var KEYS = snap.value.keys;
       var DATA = snap.value;
-
+      Comparator<Post> postComparator = (a, b) => b.published_on.compareTo(a.published_on);
       postList.clear();
 
       for (var individualKey in KEYS) {
         Post post = new Post(
+          individualKey,
             DATA[individualKey]['title'],
             DATA[individualKey]['description'],
             DATA[individualKey]['image_url'],
             DATA[individualKey]['source_url'],
             DATA[individualKey]['published_on'],
             DATA[individualKey]['label']);
-        postList.insert(0, post);
+        postList.add(post);
       }
+      postList.sort(postComparator);
 
       var total = postList.length;
       setState(() {
@@ -157,20 +158,20 @@ class _MyHomePageState extends State<MyHomePage> {
                       post.title,
                       softWrap: true,
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16.0),
+                          fontWeight: FontWeight.bold, fontSize: 14.0,height: 1.3),
                     ),
                     Text(
                       TimeAgo.getTimeAgo(int.parse(post.published_on)),
                       softWrap: true,
-                      style: TextStyle(fontSize: 12.0),
+                      style: TextStyle(fontSize: 12.0,height: 1.8),
                     ),
                     // Text(post.source_url),
                     Badge(
-                      badgeColor: Colors.blueAccent,
+                      badgeColor: Colors.blueGrey,
                       shape: BadgeShape.square,
                       borderRadius: 7,
                       toAnimate: true,
-                      badgeContent: Text(post.label,
+                      badgeContent: Text("   " + post.label+"   ",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,

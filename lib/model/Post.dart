@@ -8,7 +8,7 @@ class Post {
   String source_url;
   String published_on;
   String label;
-  Post(this.title, this.description, this.image_url, this.source_url, this.published_on, this.label);
+  Post(this.key,this.title, this.description, this.image_url, this.source_url, this.published_on, this.label);
 
 
 
@@ -25,6 +25,7 @@ class Post {
 
   toJson() {
     return {
+      "key":key,
       "title": title,
       "description": description,
       "image_url": image_url,
