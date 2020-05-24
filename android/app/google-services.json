@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "981754551906",
+    "firebase_url": "https://dailydeals-9a5ad.firebaseio.com",
+    "project_id": "dailydeals-9a5ad",
+    "storage_bucket": "dailydeals-9a5ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981754551906:android:882d30ebb66b58a5b8fb3b",
+        "android_client_info": {
+          "package_name": "com.qasoftware.daily_deals"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "981754551906-io79tedcf8s85qle7cntrbids91t8i7n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0iyaMpTpxT1mMkTubQQug4hXeHhBhzg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "981754551906-io79tedcf8s85qle7cntrbids91t8i7n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
