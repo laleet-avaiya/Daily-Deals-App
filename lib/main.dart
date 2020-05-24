@@ -1,16 +1,11 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'dart:async';
 import 'package:badges/badges.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:time_ago_provider/time_ago_provider.dart';
 
 import 'model/Post.dart';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() => runApp(MyApp());
 
