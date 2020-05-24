@@ -107,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: new Container(
           child: postList.length == 0
-              ? new Text("Loading...")
+              ?Center(child: CircularProgressIndicator(backgroundColor: Colors.green))
               : new ListView.builder(
                   itemCount: postList.length,
                   itemBuilder: (BuildContext context, int index) {
