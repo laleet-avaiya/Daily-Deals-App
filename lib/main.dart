@@ -121,7 +121,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget PostUI(Post post) {
-    double c_width = MediaQuery.of(context).size.width * 0.8;
     return new GestureDetector(
       onTap: () => _launchURL(post.source_url),
       onLongPress: () {
@@ -169,15 +168,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     Text(
                       TimeAgo.getTimeAgo(int.parse(post.published_on)),
                       softWrap: true,
-                      style: TextStyle(fontSize: 12.0, height: 1.8),
+                      style: TextStyle(fontSize: 12.0, height: 1.6),
                     ),
-                    // Text(post.source_url),
+                    Text("",style: TextStyle(fontSize: 12.0, height: 0.2),
+                    ),
                     Badge(
                       badgeColor: Colors.teal,
                       shape: BadgeShape.square,
                       borderRadius: 7,
                       toAnimate: true,
-                      badgeContent: Text("   " + post.label + "   ",
+                      badgeContent: Text(" " + post.label + " ",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
