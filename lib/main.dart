@@ -110,7 +110,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: postList.length == 0
               ? Center(
                   child:
-                      CircularProgressIndicator(backgroundColor: Colors.green))
+                      CircularProgressIndicator(backgroundColor: Colors.teal))
               : new ListView.builder(
                   itemCount: postList.length,
                   itemBuilder: (BuildContext context, int index) {
