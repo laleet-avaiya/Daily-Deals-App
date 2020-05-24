@@ -1,12 +1,16 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'dart:async';
 import 'package:badges/badges.dart';
-
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:time_ago_provider/time_ago_provider.dart';
 
 import 'model/Post.dart';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() => runApp(MyApp());
 
@@ -34,11 +38,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  String _message = '';
   List<Post> postList = [];
 
-  @override
-  void initState() {
-    super.initState();
+  _register() {
+    _firebaseMessaging.getToken().then((token) => print(token));
+  }
+
+  void getMessage() {
+    _firebaseMessaging.configure(
+        onMessage: (Map<String, dynamic> message) async {
+      print('on message $message');
+      setState(() => _message = message["notification"]["title"]);
+    }, onResume: (Map<String, dynamic> message) async {
+      print('on resume $message');
+      setState(() => _message = message["notification"]["title"]);
+    }, onLaunch: (Map<String, dynamic> message) async {
+      print('on launch $message');
+      setState(() => _message = message["notification"]["title"]);
+    });
+  }
+
+  void loadData() {
     DatabaseReference postRef =
         FirebaseDatabase.instance.reference().child("posts");
 
@@ -64,6 +86,13 @@ class _MyHomePageState extends State<MyHomePage> {
         print("Length : $total ");
       });
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getMessage();
+    loadData();
   }
 
   _launchURL() async {
@@ -97,6 +126,9 @@ class _MyHomePageState extends State<MyHomePage> {
     double c_width = MediaQuery.of(context).size.width * 0.8;
     return new GestureDetector(
       onTap: _launchURL,
+      onLongPress: () {
+        _register();
+      },
       child: new Card(
         elevation: 5,
         margin: EdgeInsets.fromLTRB(10, 10, 10, 5),

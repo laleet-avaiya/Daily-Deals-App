@@ -18,6 +18,7 @@ dependencies:
   url_launcher: ^5.4.10
   badges: ^1.1.1
   time_ago_provider: ^1.0.3
+  firebase_messaging: ^6.0.15
   
 dev_dependencies:
   flutter_test:
