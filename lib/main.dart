@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Daily Deals',
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.teal,
       ),
       home: MyHomePage(title: 'Daily Deals'),
     );
@@ -61,12 +61,13 @@ class _MyHomePageState extends State<MyHomePage> {
     postRef.once().then((DataSnapshot snap) {
       var KEYS = snap.value.keys;
       var DATA = snap.value;
-      Comparator<Post> postComparator = (a, b) => b.published_on.compareTo(a.published_on);
+      Comparator<Post> postComparator =
+          (a, b) => b.published_on.compareTo(a.published_on);
       postList.clear();
 
       for (var individualKey in KEYS) {
         Post post = new Post(
-          individualKey,
+            individualKey,
             DATA[individualKey]['title'],
             DATA[individualKey]['description'],
             DATA[individualKey]['image_url'],
@@ -91,8 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
     loadData();
   }
 
-  _launchURL() async {
-    const url = 'https://flutter.dev';
+  _launchURL(url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -108,7 +108,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: new Container(
           child: postList.length == 0
-              ?Center(child: CircularProgressIndicator(backgroundColor: Colors.green))
+              ? Center(
+                  child:
+                      CircularProgressIndicator(backgroundColor: Colors.green))
               : new ListView.builder(
                   itemCount: postList.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -121,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget PostUI(Post post) {
     double c_width = MediaQuery.of(context).size.width * 0.8;
     return new GestureDetector(
-      onTap: _launchURL,
+      onTap: () => _launchURL(post.source_url),
       onLongPress: () {
         _register();
       },
@@ -138,16 +140,18 @@ class _MyHomePageState extends State<MyHomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    Image.network(
-                      post.image_url,
-                      width: 90,
-                      height: 90,
-                    ),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Image.network(
+                        post.image_url,
+                        width: 80,
+                        height: 80,
+                      ),
+                    ],
+                  ),
                 ),
                 Expanded(
                     child: Column(
@@ -158,20 +162,22 @@ class _MyHomePageState extends State<MyHomePage> {
                       post.title,
                       softWrap: true,
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 14.0,height: 1.3),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14.0,
+                          height: 1.3),
                     ),
                     Text(
                       TimeAgo.getTimeAgo(int.parse(post.published_on)),
                       softWrap: true,
-                      style: TextStyle(fontSize: 12.0,height: 1.8),
+                      style: TextStyle(fontSize: 12.0, height: 1.8),
                     ),
                     // Text(post.source_url),
                     Badge(
-                      badgeColor: Colors.blueGrey,
+                      badgeColor: Colors.teal,
                       shape: BadgeShape.square,
                       borderRadius: 7,
                       toAnimate: true,
-                      badgeContent: Text("   " + post.label+"   ",
+                      badgeContent: Text("   " + post.label + "   ",
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
