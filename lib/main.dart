@@ -80,40 +80,42 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget PostUI(Post post) {
-    return new Card(
-      elevation: 5,
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 5),
-      semanticContainer: true,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      child: new Container(
-        padding: new EdgeInsets.all(10.0),
-        child: new Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Image.network(
-                  post.image_url,
-                  width: 90,
-                  height: 90,
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Text(post.title),
-                Text(post.published_on),
-                Text(post.source_url),
-                Text(post.label),
-              ],
-            ),
-          ],
+    return new GestureDetector(
+      child: new Card(
+        elevation: 5,
+        margin: EdgeInsets.fromLTRB(10, 10, 10, 5),
+        semanticContainer: true,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        child: new Container(
+          padding: new EdgeInsets.all(10.0),
+          child: new Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Image.network(
+                    post.image_url,
+                    width: 90,
+                    height: 90,
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text(post.title),
+                  Text(post.published_on),
+                  Text(post.source_url),
+                  Text(post.label),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
