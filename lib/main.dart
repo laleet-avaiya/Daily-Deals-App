@@ -12,9 +12,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Daily Deals',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Daily Deals'),
     );
   }
 }
@@ -31,7 +31,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<Post> postList = [];
 
+  @override
   void initState() {
+    super.initState();
     DatabaseReference postRef =
         FirebaseDatabase.instance.reference().child("posts");
 
@@ -49,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
             DATA[individualKey]['source_url'],
             DATA[individualKey]['published_on'],
             DATA[individualKey]['label']);
-        postList.add(post);
+        postList.insert(0, post);
       }
 
       var total = postList.length;
@@ -65,15 +67,55 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: AppBar(
           title: Text(widget.title),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'You have pushed the button this many times:',
-              )
-            ],
-          ),
+        body: new Container(
+          child: postList.length == 0
+              ? new Text("Loading...")
+              : new ListView.builder(
+                  itemCount: postList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return PostUI(postList[index]);
+                  },
+                ),
         ));
+  }
+
+  Widget PostUI(Post post) {
+    return new Card(
+      elevation: 5,
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 5),
+      semanticContainer: true,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      child: new Container(
+        padding: new EdgeInsets.all(10.0),
+        child: new Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Image.network(
+                  post.image_url,
+                  width: 90,
+                  height: 90,
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Text(post.title),
+                Text(post.published_on),
+                Text(post.source_url),
+                Text(post.label),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
