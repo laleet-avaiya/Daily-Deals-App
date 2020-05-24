@@ -1,5 +1,10 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'dart:async';
+import 'package:badges/badges.dart';
+
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:time_ago_provider/time_ago_provider.dart';
 
 import 'model/Post.dart';
 
@@ -61,6 +66,15 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  _launchURL() async {
+    const url = 'https://flutter.dev';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,42 +94,64 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget PostUI(Post post) {
+    double c_width = MediaQuery.of(context).size.width * 0.8;
     return new GestureDetector(
+      onTap: _launchURL,
       child: new Card(
         elevation: 5,
         margin: EdgeInsets.fromLTRB(10, 10, 10, 5),
         semanticContainer: true,
         clipBehavior: Clip.antiAliasWithSaveLayer,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         child: new Container(
           padding: new EdgeInsets.all(10.0),
           child: new Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Image.network(
-                    post.image_url,
-                    width: 90,
-                    height: 90,
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text(post.title),
-                  Text(post.published_on),
-                  Text(post.source_url),
-                  Text(post.label),
-                ],
-              ),
-            ],
-          ),
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Image.network(
+                      post.image_url,
+                      width: 90,
+                      height: 90,
+                    ),
+                  ],
+                ),
+                Expanded(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      post.title,
+                      softWrap: true,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16.0),
+                    ),
+                    Text(
+                      TimeAgo.getTimeAgo(int.parse(post.published_on)),
+                      softWrap: true,
+                      style: TextStyle(fontSize: 12.0),
+                    ),
+                    // Text(post.source_url),
+                    Badge(
+                      badgeColor: Colors.blueAccent,
+                      shape: BadgeShape.square,
+                      borderRadius: 7,
+                      toAnimate: true,
+                      badgeContent: Text(post.label,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 12.0)),
+                    ),
+                  ],
+                )),
+              ]),
         ),
       ),
     );
