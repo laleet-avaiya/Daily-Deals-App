@@ -45,10 +45,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
     testDevices: AD_MOB_TEST_DEVICE != null ? <String>[AD_MOB_TEST_DEVICE] : null,
-    childDirected: true,
-    nonPersonalizedAds: true,
   );
-
+  
   BannerAd _bannerAd;
   bool _adShown;
 
