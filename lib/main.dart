@@ -130,6 +130,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ..show();
   }
 
+  Future<void> _getData() async {
+    setState(() {
+      loadData();
+    });
+  }
+
   @override
   void dispose() {
     _bannerAd?.dispose();
@@ -159,13 +165,16 @@ class _MyHomePageState extends State<MyHomePage> {
         child: postList.length == 0
             ? Center(
                 child: CircularProgressIndicator(backgroundColor: Colors.teal))
-            : new ListView.builder(
-                itemCount: postList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return PostUI(postList[index]);
-                },
+            :  RefreshIndicator(
+                child:  new ListView.builder(
+                    itemCount: postList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return PostUI(postList[index]);
+                    },
+                  ),
+                onRefresh: _getData,
               ),
-      ),
+        ),
       persistentFooterButtons: fakeBottomButtons,
     );
   }
