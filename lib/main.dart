@@ -13,7 +13,7 @@ void main() => runApp(MyApp());
 // test device. Check the logs for your device's ID value.
 const String AD_MOB_APP_ID = 'ca-app-pub-8894739064593802~2924171610';
 const String AD_MOB_AD_ID = 'ca-app-pub-8894739064593802/9106436587';
-const String AD_MOB_TEST_DEVICE ='9BD99794EFFFC5BD85BE8BB42E0E6525';
+const String AD_MOB_TEST_DEVICE = '9BD99794EFFFC5BD85BE8BB42E0E6525';
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -40,15 +40,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-  String _message = '';
   List<Post> postList = [];
-
-  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
-    testDevices: AD_MOB_TEST_DEVICE != null ? <String>[AD_MOB_TEST_DEVICE] : null,
-  );
-  
+  String _message = '';
   BannerAd _bannerAd;
   bool _adShown;
+
+  static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
+    testDevices:
+        AD_MOB_TEST_DEVICE != null ? <String>[AD_MOB_TEST_DEVICE] : null,
+  );
 
   BannerAd createBannerAd() {
     return BannerAd(
@@ -120,10 +120,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    _firebaseMessaging.subscribeToTopic('post');
     getMessage();
     loadData();
     // FirebaseAdMob.instance.initialize(appId: FirebaseAdMob.testAppId);
-     FirebaseAdMob.instance.initialize(appId: AD_MOB_APP_ID);
+    FirebaseAdMob.instance.initialize(appId: AD_MOB_APP_ID);
     _adShown = false;
     _bannerAd = createBannerAd()
       ..load()
@@ -165,16 +166,16 @@ class _MyHomePageState extends State<MyHomePage> {
         child: postList.length == 0
             ? Center(
                 child: CircularProgressIndicator(backgroundColor: Colors.teal))
-            :  RefreshIndicator(
-                child:  new ListView.builder(
-                    itemCount: postList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return PostUI(postList[index]);
-                    },
-                  ),
+            : RefreshIndicator(
+                child: new ListView.builder(
+                  itemCount: postList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return PostUI(postList[index]);
+                  },
+                ),
                 onRefresh: _getData,
               ),
-        ),
+      ),
       persistentFooterButtons: fakeBottomButtons,
     );
   }
