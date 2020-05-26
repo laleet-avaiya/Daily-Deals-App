@@ -12,8 +12,13 @@ void main() => runApp(MyApp());
 // You can also test with your own ad unit IDs by registering your device as a
 // test device. Check the logs for your device's ID value.
 const String AD_MOB_APP_ID = 'ca-app-pub-8894739064593802~2924171610';
-const String AD_MOB_AD_ID = 'ca-app-pub-8894739064593802/9106436587';
 const String AD_MOB_TEST_DEVICE = '9BD99794EFFFC5BD85BE8BB42E0E6525';
+
+// Banner
+const String AD_MOB_AD_ID = 'ca-app-pub-8894739064593802/9106436587';
+
+// IntersititialAd
+const String InterstitialAd_AD_ID = 'ca-app-pub-8894739064593802/5097256421';
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -43,6 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Post> postList = [];
   String _message = '';
   BannerAd _bannerAd;
+  InterstitialAd _interstitialAd;
   bool _adShown;
 
   static const MobileAdTargetingInfo targetingInfo = MobileAdTargetingInfo(
@@ -64,6 +70,17 @@ class _MyHomePageState extends State<MyHomePage> {
           _adShown = false;
           setState(() {});
         }
+      },
+    );
+  }
+
+  InterstitialAd createInterstitialAd() {
+    return InterstitialAd(
+      // adUnitId: InterstitialAd.testAdUnitId,
+      adUnitId: InterstitialAd_AD_ID,
+      targetingInfo: targetingInfo,
+      listener: (MobileAdEvent event) {
+        print("InterstitialAd event $event");
       },
     );
   }
@@ -140,6 +157,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void dispose() {
     _bannerAd?.dispose();
+    _interstitialAd?.dispose();
     super.dispose();
   }
 
@@ -159,9 +177,21 @@ class _MyHomePageState extends State<MyHomePage> {
     ));
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title), actions: <Widget>[
+        Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () {
+                _interstitialAd?.dispose();
+                _interstitialAd = createInterstitialAd()..load();
+                _interstitialAd?.show();
+              },
+              child: Icon(
+                Icons.attach_money,
+                size: 26.0,
+              ),
+            )),
+      ]),
       body: new Container(
         child: postList.length == 0
             ? Center(
