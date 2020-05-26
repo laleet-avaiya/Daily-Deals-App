@@ -199,17 +199,12 @@ class _MyHomePageState extends State<MyHomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Image.network(
-                        post.image_url,
-                        width: 80,
-                        height: 80,
-                      ),
-                    ],
+                Container(
+                  padding: new EdgeInsets.all(10.0),
+                  child: Image.network(
+                    post.image_url,
+                    width: 80,
+                    height: 80,
                   ),
                 ),
                 Expanded(
