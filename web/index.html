@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DailyDeals</title>
+
+    <!-- TODO: BS4 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <!-- TODO: FireBase -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-database.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-analytics.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAPAg_7uezGb1Bcy_bq9OStrxGNXs08rnE",
+            authDomain: "dailydeals-9a5ad.firebaseapp.com",
+            databaseURL: "https://dailydeals-9a5ad.firebaseio.com",
+            projectId: "dailydeals-9a5ad",
+            storageBucket: "dailydeals-9a5ad.appspot.com",
+            messagingSenderId: "981754551906",
+            appId: "1:981754551906:web:bf60c3016dd88d6bb8fb3b",
+            measurementId: "G-SM5R5F1MBZ"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+        <h2>Deals Form</h2>
+
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" class="form-control" id="title" placeholder="Enter Title" name="title" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea type="text" class="form-control" id="description" placeholder="Enter Description"
+                name="description" required></textarea>
+
+        </div>
+
+        <div class="form-group">
+            <label for="image_url">Image Url</label>
+            <input type="text" class="form-control" id="image_url" placeholder="Enter Image URL" name="image_url"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label for="source_url">SourceUrl</label>
+            <input type="text" class="form-control" id="source_url" placeholder="Enter Source URL" name="source_url"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label for="label">Label:</label>
+            <input type="text" class="form-control" id="label" placeholder="50% Off" name="label" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" onclick="writeUserData()">Submit</button>
+    </div>
+
+
+</body>
+<script>
+
+    function clearData() {
+        document.getElementById('title').value = "";
+        document.getElementById('description').value = "";
+        document.getElementById('image_url').value = "";
+        document.getElementById('source_url').value = "";
+        document.getElementById('label').value = "";
+    }
+
+    function sendNotification(title,message,image_url) {
+        data = {
+            "notification": {
+                "title": title,
+                "body": message,
+                "image": image_url
+            },
+            "priority": "high",
+            "data": {
+                "clickaction": "FLUTTER_NOTIFICATION_CLICK",
+                "id": "1",
+                "status": "done"
+            },
+            "to": "/topics/post"
+        }
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://fcm.googleapis.com/fcm/send", false);
+
+        //Send the proper header information along with the request
+        function setHeaders(content) {
+            for (let key in content) {
+                xhr.setRequestHeader(key, content[key])
+            }
+        }
+        setHeaders({ "Content-Type": "application/json", "Authorization": "key=AAAA5JUhnmI:APA91bF2s2dRxO81EHcWI9LAJpuhjiwbb66Wo2b-tYO6xO-ultvug7aaf5UT0UWVnCfKJi8rvW3uJ7G09AxfwyPYNPj_EE6cMOdKYCI8XikBsctpSmuDrAYqaXWxchSz2EvSQP3pTUMH" })
+
+        xhr.onreadystatechange = function () { // Call a function when the state changes.
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                // Request finished. Do processing here.
+                console.log(this.status);
+            }
+        }
+        xhr.send(JSON.stringify(data));
+
+    }
+    function writeUserData() {
+        // Set Data
+        var id = Date.now().toString();
+        var title = document.getElementById('title').value;
+        var description = document.getElementById('description').value;
+        var image_url = document.getElementById('image_url').value;
+        var source_url = document.getElementById('source_url').value;
+        var label = document.getElementById('label').value;
+        var published_on = Date.now().toString();
+
+        post = {
+            title: title,
+            description: description,
+            image_url: image_url,
+            source_url: source_url,
+            label: label,
+            published_on: published_on
+        }
+
+        firebase.database().ref('posts/' + id).set(post);
+        sendNotification(label,title,image_url);
+        clearData();
+
+        return false;
+    }
+</script>
+
+</html>
