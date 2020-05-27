@@ -247,17 +247,17 @@ class _MyHomePageState extends State<MyHomePage> {
                       softWrap: true,
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 14.0,
+                          fontSize: 12.0,
                           height: 1.3),
                     ),
                     Text(
                       TimeAgo.getTimeAgo(int.parse(post.published_on)),
                       softWrap: true,
-                      style: TextStyle(fontSize: 12.0, height: 1.6),
+                      style: TextStyle(fontSize: 10.0, height: 1.6),
                     ),
                     Text(
                       "",
-                      style: TextStyle(fontSize: 12.0, height: 0.2),
+                      style: TextStyle(fontSize: 10.0, height: 0.2),
                     ),
                     Badge(
                       badgeColor: Colors.teal,
