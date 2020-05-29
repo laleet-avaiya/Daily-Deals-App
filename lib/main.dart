@@ -26,8 +26,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Daily Deals',
+      color: Colors.white,
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        primarySwatch: Colors.green,
       ),
       home: MyHomePage(title: 'Daily Deals'),
     );
@@ -176,37 +177,42 @@ class _MyHomePageState extends State<MyHomePage> {
       height: 50.0,
     ));
 
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.title), actions: <Widget>[
-        Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: () {
-                _interstitialAd?.dispose();
-                _interstitialAd = createInterstitialAd()..load();
-                _interstitialAd?.show();
-              },
-              child: Icon(
-                Icons.attach_money,
-                size: 26.0,
-              ),
-            )),
-      ]),
-      body: new Container(
-        child: postList.length == 0
-            ? Center(
-                child: CircularProgressIndicator(backgroundColor: Colors.teal))
-            : RefreshIndicator(
-                child: new ListView.builder(
-                  itemCount: postList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return PostUI(postList[index]);
-                  },
-                ),
-                onRefresh: _getData,
-              ),
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.title),
+          bottom: TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.home)),
+              Tab(icon: Icon(Icons.phone_android)),
+              Tab(icon: Icon(Icons.show_chart)),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            new Container(
+              child: postList.length == 0
+                  ? Center(
+                      child: CircularProgressIndicator(
+                          backgroundColor: Colors.green))
+                  : RefreshIndicator(
+                      child: new ListView.builder(
+                        itemCount: postList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return PostUI(postList[index]);
+                        },
+                      ),
+                      onRefresh: _getData,
+                    ),
+            ),
+            Icon(Icons.ac_unit),
+            Icon(Icons.ac_unit),
+          ],
+        ),
+        persistentFooterButtons: fakeBottomButtons,
       ),
-      persistentFooterButtons: fakeBottomButtons,
     );
   }
 
@@ -260,7 +266,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: TextStyle(fontSize: 10.0, height: 0.2),
                     ),
                     Badge(
-                      badgeColor: Colors.teal,
+                      badgeColor: Colors.black87,
                       shape: BadgeShape.square,
                       borderRadius: 7,
                       toAnimate: true,
