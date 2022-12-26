@@ -21,7 +21,10 @@ dependencies:
   firebase_messaging: ^6.0.15
   firebase_admob:
   
-  
+
+dependency_overrides:
+  platform: ^3.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

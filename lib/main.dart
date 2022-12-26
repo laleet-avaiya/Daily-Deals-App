@@ -268,7 +268,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Badge(
                       badgeColor: Colors.black87,
                       shape: BadgeShape.square,
-                      borderRadius: 7,
+                      // borderRadius: 7,
                       toAnimate: true,
                       badgeContent: Text(" " + post.label + " ",
                           style: TextStyle(
